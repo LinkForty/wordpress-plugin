@@ -11,4 +11,6 @@ composer.json
 composer.lock
 phpcs.xml.dist
 CHANGELOG.md
+CONTRIBUTING.md
 README.md
+.wp-env.json

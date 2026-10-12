@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/LinkForty/wordpress-plugin/blob/main/.github/SECURITY.md
+    about: Please email security@linkforty.com instead of opening an issue.
+  - name: Setup guide
+    url: https://docs.linkforty.com/sdks/wordpress
+    about: Installation, settings, events, and troubleshooting.

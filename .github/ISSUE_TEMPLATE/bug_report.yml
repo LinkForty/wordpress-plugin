@@ -1,0 +1,63 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Settings → LinkForty, site key set, WooCommerce events on
+        2. Add a product to the cart from the shop page
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: plugin_version
+    attributes:
+      label: Plugin version
+    validations:
+      required: true
+  - type: input
+    id: wp_version
+    attributes:
+      label: WordPress version
+    validations:
+      required: true
+  - type: input
+    id: wc_version
+    attributes:
+      label: WooCommerce version
+      description: Leave blank if WooCommerce is not installed.
+  - type: input
+    id: php_version
+    attributes:
+      label: PHP version
+    validations:
+      required: true
+  - type: dropdown
+    id: checkout
+    attributes:
+      label: Checkout type
+      options:
+        - Classic (shortcode)
+        - Block-based
+        - Not applicable
+  - type: textarea
+    id: network
+    attributes:
+      label: What the browser sent
+      description: The request body of the POST to /api/pixel/v1/event from the network tab, if the bug is about an event. You can replace the site key with ws_… before pasting.
+      render: json
+  - type: textarea
+    id: environment
+    attributes:
+      label: Other front-end plugins
+      description: Caching, optimization, consent, and page-builder plugins that are active.

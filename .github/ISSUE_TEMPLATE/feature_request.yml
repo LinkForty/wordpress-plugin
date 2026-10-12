@@ -1,0 +1,23 @@
+name: Feature request
+description: A new setting, hook, event, or behavior
+labels: [enhancement]
+body:
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Use case
+      description: What are you trying to measure or do, and what gets in the way today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: If this adds or changes an event or its properties, name them. Event names are shared by every store on the plugin, so these get discussed before they are built.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Including whether one of the existing filters already gets you there.

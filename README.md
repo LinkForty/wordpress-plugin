@@ -54,9 +54,12 @@ LinkForty_Events::track( 'newsletter_signup', array( 'list' => 'weekly' ) );
 
 ```bash
 composer install
-composer lint      # PHP syntax check
-composer phpcs     # WordPress coding standards
+composer lint              # PHP syntax check
+composer phpcs             # WordPress coding standards
+npx @wordpress/env start   # local WordPress + WooCommerce with this plugin mounted (needs Docker)
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the coding standards, the event contract, and the manual test checklist.
 
 Build a distributable zip with `composer build`; it honours `.distignore`.
 
