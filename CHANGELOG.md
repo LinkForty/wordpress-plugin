@@ -24,3 +24,5 @@ Initial scaffold.
   "redirect to the cart page after successful addition".
 - WP Consent API support: the visitor ID is only set with statistics consent.
 - High-Performance Order Storage compatibility declaration.
+- Release workflow: pushing a `v*` tag builds the plugin zip and attaches it
+  to a GitHub release.

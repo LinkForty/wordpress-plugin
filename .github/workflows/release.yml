@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build and publish the plugin zip
+    runs-on: ubuntu-latest
+    if: github.repository == 'LinkForty/wordpress-plugin'
+    timeout-minutes: 15
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: composer
+
+      - run: composer install --no-interaction --no-progress
+
+      - run: composer lint
+
+      - run: composer phpcs
+
+      - name: Tag matches the plugin version
+        id: version
+        run: |
+          set -e
+          tag="${GITHUB_REF_NAME#v}"
+          header=$(grep -E '^\s*\*\s*Version:' linkforty.php | awk '{print $NF}')
+          stable=$(grep -E '^Stable tag:' readme.txt | awk '{print $NF}')
+          echo "tag=$tag header=$header stable=$stable"
+          test "$tag" = "$header"
+          test "$tag" = "$stable"
+          grep -q "## \[$tag\]" CHANGELOG.md
+          echo "version=$tag" >> "$GITHUB_OUTPUT"
+          if [[ "$tag" == 0.* || "$tag" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build the zip
+        run: |
+          set -e
+          composer build
+          mv build/linkforty.zip "build/linkforty-${{ steps.version.outputs.version }}.zip"
+          unzip -l "build/linkforty-${{ steps.version.outputs.version }}.zip"
+
+      - name: Release notes from the changelog
+        run: |
+          set -e
+          awk -v v="${{ steps.version.outputs.version }}" '
+            $0 ~ "^## \\[" v "\\]" { on = 1; next }
+            on && /^## \[/ { exit }
+            on { print }
+          ' CHANGELOG.md | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' > build/notes.md
+          printf '\n\nInstall: upload the zip under Plugins → Add New → Upload Plugin, then follow the [setup guide](https://docs.linkforty.com/sdks/wordpress).\n' >> build/notes.md
+          cat build/notes.md
+
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          args=(--title "v${{ steps.version.outputs.version }}" --notes-file build/notes.md --verify-tag)
+          if [ "${{ steps.version.outputs.prerelease }}" = "true" ]; then
+            args+=(--prerelease)
+          fi
+          gh release create "$GITHUB_REF_NAME" "build/linkforty-${{ steps.version.outputs.version }}.zip" "${args[@]}"

@@ -16,7 +16,7 @@ WordPress plugin for [LinkForty](https://linkforty.com) web analytics and conver
 
 ## Install
 
-1. Download the latest release zip and upload it under Plugins → Add New, or copy this directory into `wp-content/plugins/linkforty`.
+1. Download `linkforty-<version>.zip` from the [latest release](https://github.com/LinkForty/wordpress-plugin/releases/latest) and upload it under Plugins → Add New → Upload Plugin. To run from source instead, clone this repository into `wp-content/plugins/linkforty`.
 2. Activate the plugin.
 3. Settings → LinkForty: paste the site key from Workspace Settings → Web Pixel in the LinkForty dashboard.
 
@@ -59,6 +59,8 @@ composer phpcs     # WordPress coding standards
 ```
 
 Build a distributable zip with `composer build`; it honours `.distignore`.
+
+To release, bump the version in `linkforty.php` (header and constant), `readme.txt` and `CHANGELOG.md`, then push a matching tag such as `v0.2.0`. The release workflow lints, builds the zip and attaches it to a GitHub release. Versions starting with `0.` are marked pre-release.
 
 ## Requirements
 

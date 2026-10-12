@@ -29,7 +29,7 @@ Mark `purchase` as a goal under Web analytics in your LinkForty dashboard so it 
 
 == Installation ==
 
-1. Install and activate the plugin.
+1. Download the plugin zip from https://github.com/LinkForty/wordpress-plugin/releases/latest, upload it under Plugins → Add New → Upload Plugin, and activate it.
 2. In the LinkForty dashboard, open Workspace Settings → Web Pixel and copy your site key (it starts with `ws_`).
 3. In WordPress, open Settings → LinkForty, paste the site key and save.
 4. Optional: if you have a consent plugin that supports the WP Consent API, turn on "Enable visitor ID" for new-vs-returning analytics.
