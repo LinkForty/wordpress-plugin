@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer
+
+      - run: composer install --no-interaction --no-progress
+
+      - run: composer lint
+
+      - run: composer phpcs
+        if: matrix.php == '8.3'
+
+  headers:
+    name: Plugin header and readme agree
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Versions match
+        run: |
+          set -e
+          header=$(grep -E '^\s*\*\s*Version:' linkforty.php | awk '{print $NF}')
+          constant=$(grep -E "define\( 'LINKFORTY_VERSION'" linkforty.php | sed -E "s/.*'([0-9.]+)'.*/\1/")
+          stable=$(grep -E '^Stable tag:' readme.txt | awk '{print $NF}')
+          echo "header=$header constant=$constant stable=$stable"
+          test "$header" = "$constant"
+          test "$header" = "$stable"
+          grep -q "## \[$header\]" CHANGELOG.md

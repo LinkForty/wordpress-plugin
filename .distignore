@@ -1,0 +1,14 @@
+.git
+.github
+.gitignore
+.distignore
+.phpcs.cache
+.DS_Store
+build
+node_modules
+vendor
+composer.json
+composer.lock
+phpcs.xml.dist
+CHANGELOG.md
+README.md

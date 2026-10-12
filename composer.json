@@ -1,0 +1,27 @@
+{
+  "name": "linkforty/wordpress-plugin",
+  "description": "LinkForty web analytics and WooCommerce conversion tracking for WordPress.",
+  "type": "wordpress-plugin",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+    "php-parallel-lint/php-parallel-lint": "^1.4",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "wp-coding-standards/wpcs": "^3.1"
+  },
+  "scripts": {
+    "lint": "parallel-lint --exclude vendor --exclude node_modules .",
+    "phpcs": "phpcs",
+    "phpcbf": "phpcbf",
+    "build": "rm -rf build && mkdir -p build/linkforty && rsync -a --exclude-from=.distignore ./ build/linkforty/ && cd build && zip -qr linkforty.zip linkforty && echo build/linkforty.zip"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "sort-packages": true
+  }
+}

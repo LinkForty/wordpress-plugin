@@ -1,0 +1,6 @@
+/vendor/
+/build/
+/node_modules/
+.phpcs.cache
+.DS_Store
+*.zip
