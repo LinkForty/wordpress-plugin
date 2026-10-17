@@ -28,8 +28,7 @@ Enhancement suggestions are tracked as GitHub issues. Include the use case, the 
 2. Make your change, following the standards below
 3. Run `composer lint` and `composer phpcs`
 4. Test on a real WordPress site (see [Testing](#testing))
-5. Add a line under `[Unreleased]` in `CHANGELOG.md`
-6. Open a pull request using the template
+5. Open a pull request using the template, with a [conventional commit](#commit-messages) title. Don't edit `CHANGELOG.md` or the version; the release on merge writes both
 
 ## Development Setup
 
@@ -76,7 +75,7 @@ linkforty/
 │   └── class-linkforty-woocommerce.php   # purchase, begin_checkout, add_to_cart
 ├── assets/js/linkforty-woocommerce.js    # Browser-side add-to-cart listener
 ├── readme.txt                            # WordPress.org readme
-└── .github/workflows/                    # CI and the tag-driven release
+└── .github/workflows/                    # CI and the release on every merge to main
 ```
 
 ## Coding Standards
@@ -150,7 +149,9 @@ Follow conventional commits:
 type(scope): description
 ```
 
-Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`. Scopes that fit this plugin: `pixel`, `woocommerce`, `settings`, `events`, `release`.
+Types: `feat`, `fix`, `docs`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`. Scopes that fit this plugin: `pixel`, `woocommerce`, `settings`, `events`, `release`.
+
+Pull requests are squash-merged, so **the pull request title is the commit message** that decides the next version and becomes its changelog line. Write it for a store owner reading the release notes. A breaking change gets a `!` after the type or scope (`fix(woocommerce)!: …`) and a `BREAKING CHANGE:` paragraph in the pull request description saying what to change.
 
 ```
 fix(woocommerce): report pending orders once they move to processing
@@ -162,7 +163,7 @@ docs(readme): document the purchase properties
 
 - [ ] `composer lint` and `composer phpcs` pass
 - [ ] Tested on a real site; the relevant checklist rows are in the PR description
-- [ ] `CHANGELOG.md` has a line under `[Unreleased]`
+- [ ] The pull request title is a conventional commit; breaking changes have a `!` and a `BREAKING CHANGE:` note
 - [ ] README and `readme.txt` updated if you changed a setting, an event, or a hook
 - [ ] No new event names or renamed properties without discussion in an issue first
 
@@ -172,13 +173,24 @@ A maintainer reviews every pull request. Expect questions about attribution and 
 
 ## Versioning and Releases
 
-Maintainers cut releases. The plugin follows [semantic versioning](https://semver.org/):
+Every merge to `main` can release. The release workflow runs [semantic-release](https://semantic-release.gitbook.io/), which reads the conventional commits since the last tag and picks the version:
+
+| Commits since the last release | Release |
+|---|---|
+| Only `chore`, `test`, `ci`, `build` | None |
+| Any `fix`, `docs`, `refactor`, `perf`, `revert` | Patch |
+| Any `feat` | Minor |
+| Any breaking change (`!` or `BREAKING CHANGE:`) | Minor while the plugin is below 1.0, major from 1.0 on |
+
+What counts as a feature or a breaking change:
 
 - **Patch** for fixes
 - **Minor** for new settings, hooks, events, or properties
-- **Major** for a renamed or removed event, property, setting, or hook
+- **Breaking** for a renamed or removed event, property, setting, or hook
 
-To release, the version is bumped in `linkforty.php` (header and constant), `readme.txt` (`Stable tag`) and `CHANGELOG.md` (the `[Unreleased]` section becomes the new version), then a matching tag such as `v0.2.0` is pushed. The release workflow lints, builds the zip, and attaches it to a GitHub release with the changelog section as notes. Versions below 1.0 are marked pre-release.
+When it releases, the workflow writes the version into `linkforty.php` (header and constant) and `readme.txt` (`Stable tag`) with `scripts/set-version.sh`, prepends the release notes to `CHANGELOG.md`, builds the zip, commits `chore(release): x.y.z [skip ci]`, tags `vx.y.z`, and publishes a GitHub release with the zip attached. Nobody edits those files by hand.
+
+Below 1.0, a breaking change bumps the minor version, as [semantic versioning allows for 0.x](https://semver.org/#spec-item-4). At 1.0, change the `"breaking": true` rule in `.releaserc.json` from `minor` to `major`.
 
 ## Security
 
