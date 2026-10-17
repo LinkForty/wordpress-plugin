@@ -26,8 +26,8 @@ Then mark `purchase` as a goal under Web analytics in LinkForty so it counts as 
 
 | Event | When | Properties |
 |-------|------|------------|
-| `purchase` | Order-received page, once per order, status processing / completed / on-hold | `order_id`, `revenue`, `currency`, `item_count`, `payment_method`, `coupon` |
-| `begin_checkout` | Checkout page view with a non-empty cart | `value`, `currency`, `item_count` |
+| `purchase` | Order-received page, once per order, status processing / completed / on-hold | `order_id`, `value` (order total, counted as revenue), `revenue` (same total), `currency`, `item_count`, `payment_method`, `coupon` |
+| `begin_checkout` | Checkout page view with a non-empty cart | `cart_total`, `currency`, `item_count` |
 | `add_to_cart` | AJAX button, block cart, or product-page form submit | `product_id`, `quantity`, `sku`, plus `product_name`, `price`, `variation_id` on form submits |
 
 Events are handed to the browser pixel (`window.LinkForty.track`), never sent server to server. The pixel attaches the session's click id and UTM parameters, which is what attributes the event to a link.

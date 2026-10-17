@@ -38,9 +38,10 @@ class LinkForty_Events {
 	 * Queues a conversion for the current page.
 	 *
 	 * @param string               $name       Event name, e.g. `purchase`.
-	 * @param array<string, mixed> $properties Flat properties. Use `revenue`
-	 *                                         for a monetary value so it rolls
-	 *                                         up in revenue reporting.
+	 * @param array<string, mixed> $properties Flat properties. `value` is the
+	 *                                         amount LinkForty sums as revenue,
+	 *                                         with `currency`; put any other
+	 *                                         amount under a different key.
 	 */
 	public static function track( $name, array $properties = array() ) {
 		$name = trim( (string) $name );

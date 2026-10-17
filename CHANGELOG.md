@@ -5,6 +5,16 @@ All notable changes to this plugin are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- WooCommerce purchases record their revenue: the order total is sent as
+  `value`, the property LinkForty sums as revenue. `revenue` is still sent with
+  the same total.
+
+### Changed
+- **Breaking:** `begin_checkout` sends the cart total as `cart_total` instead of
+  `value`, so a started checkout is not counted as revenue. Anything that reads
+  `begin_checkout`'s `value` should read `cart_total`.
+
 ## [0.1.0] - 2026-10-11
 
 Initial scaffold.
