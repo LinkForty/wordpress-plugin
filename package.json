@@ -1,0 +1,17 @@
+{
+  "name": "linkforty-wordpress-plugin",
+  "private": true,
+  "description": "Release tooling for the LinkForty WordPress plugin. The plugin itself is PHP; this file only pins semantic-release.",
+  "license": "MIT",
+  "scripts": {
+    "release": "semantic-release"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.0.0",
+    "conventional-changelog-conventionalcommits": "^7.0.2",
+    "semantic-release": "^25.0.0"
+  }
+}

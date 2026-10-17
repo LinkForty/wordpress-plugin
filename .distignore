@@ -14,3 +14,7 @@ CHANGELOG.md
 CONTRIBUTING.md
 README.md
 .wp-env.json
+package.json
+package-lock.json
+.releaserc.json
+scripts

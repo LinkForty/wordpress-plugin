@@ -34,6 +34,6 @@ Fixes #
 
 ## Checklist
 
-- [ ] `CHANGELOG.md` has a line under `[Unreleased]`
+- [ ] The title is a conventional commit (it becomes the squash commit and the changelog line); a breaking change has a `!` and a `BREAKING CHANGE:` paragraph above
 - [ ] README and `readme.txt` updated for any changed setting, event, or hook
-- [ ] Commit messages follow conventional commits
+- [ ] `CHANGELOG.md` and the version are untouched; the release on merge writes them
