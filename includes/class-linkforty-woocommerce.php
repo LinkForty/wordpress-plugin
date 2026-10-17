@@ -102,9 +102,12 @@ class LinkForty_WooCommerce {
 			return;
 		}
 
+		// `value` is the amount LinkForty sums as revenue. `revenue` carries the
+		// same total for filters written against the 0.1.0 payload.
 		$coupons    = $order->get_coupon_codes();
 		$properties = array(
 			'order_id'       => (string) $order->get_id(),
+			'value'          => (float) $order->get_total(),
 			'revenue'        => (float) $order->get_total(),
 			'currency'       => $order->get_currency(),
 			'item_count'     => (int) $order->get_item_count(),
@@ -140,10 +143,12 @@ class LinkForty_WooCommerce {
 			return;
 		}
 
+		// The cart total is not sent as `value`: LinkForty sums `value` as
+		// revenue, and a checkout that is started is not money received.
 		LinkForty_Events::track(
 			'begin_checkout',
 			array(
-				'value'      => (float) $cart->get_total( 'edit' ),
+				'cart_total' => (float) $cart->get_total( 'edit' ),
 				'currency'   => get_woocommerce_currency(),
 				'item_count' => (int) $cart->get_cart_contents_count(),
 			)

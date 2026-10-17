@@ -105,8 +105,8 @@ These rules exist because every store running the plugin reports with the same e
 - **A purchase is a confirmed order on the order-received page**, never a button click. Button clicks are intent.
 - **Each order is reported once.** The `_linkforty_purchase_tracked` order meta is the guard, and the ingestion endpoint does not deduplicate for us.
 - **Event names and properties are stable.** `purchase`, `begin_checkout`, and `add_to_cart` and their documented properties are an interface. Renaming or removing one is a breaking change that needs a major version and a changelog entry explaining the migration. Adding a property is fine.
-- **Properties are flat.** Primitives and arrays of primitives only; the pixel flattens nested objects and caps the payload, so keep to what is documented in the README.
-- **Monetary values go in `revenue`** for events that should count toward revenue, and in `value` for events that should not.
+- **Properties are flat.** Primitives and arrays of primitives only; the pixel drops nested objects and caps the payload (30 properties), so keep to what is documented in the README.
+- **`value` is revenue.** LinkForty sums the `value` of conversions as revenue, so only `purchase` sends one. Any other amount (a cart total, a product price) goes under its own key, such as `cart_total` or `price`.
 
 ## Testing
 
@@ -118,7 +118,7 @@ Run through whichever rows your change can affect, with the browser network tab 
 
 - [ ] Pixel tag present in `<head>` on the home page, a product page, cart, and checkout, with the expected `data-*` attributes
 - [ ] A page view reaches the endpoint and returns `204`
-- [ ] Place an order with the classic checkout. Exactly one `purchase` with the correct `order_id`, `revenue`, and `currency`
+- [ ] Place an order with the classic checkout. Exactly one `purchase` with the correct `order_id`, `value`, and `currency`
 - [ ] Place an order with the block checkout. Same result
 - [ ] Refresh the order-received page. No second `purchase`
 - [ ] An order left `pending` (for example, a gateway that does not return) sends nothing; after it moves to `processing`, a visit to the order-received page sends one `purchase`

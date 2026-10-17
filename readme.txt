@@ -21,8 +21,8 @@ LinkForty is a deep linking and attribution platform. This plugin adds the LinkF
 
 Events reported with WooCommerce enabled:
 
-* `purchase` with `order_id`, `revenue`, `currency`, `item_count`, `payment_method`, `coupon`
-* `begin_checkout` with `value`, `currency`, `item_count`
+* `purchase` with `order_id`, `value` (the order total, counted as revenue), `revenue`, `currency`, `item_count`, `payment_method`, `coupon`
+* `begin_checkout` with `cart_total`, `currency`, `item_count`
 * `add_to_cart` with `product_id`, `quantity`, `sku`, and on form submits `product_name`, `price`, `variation_id`
 
 Mark `purchase` as a goal under Web analytics in your LinkForty dashboard so it counts as a conversion.
