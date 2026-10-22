@@ -132,7 +132,11 @@ class LinkForty_Pixel {
 	/**
 	 * Adds the configuration attributes to the enqueued script tag.
 	 *
-	 * @param string $tag    The `<script>` HTML.
+	 * `$tag` also holds the inline bootstrap printed before the pixel, so the
+	 * attributes must go on the pixel's own `<script src>` tag: the pixel reads
+	 * them from `document.currentScript` and sends nothing without a site key.
+	 *
+	 * @param string $tag    The `<script>` HTML, inline scripts included.
 	 * @param string $handle Script handle.
 	 * @return string
 	 */
@@ -149,6 +153,21 @@ class LinkForty_Pixel {
 			$extra .= ' ' . $name . '="' . esc_attr( (string) $value ) . '"';
 		}
 
-		return preg_replace( '/<script\b/', '<script' . $extra, $tag, 1 );
+		// WordPress gives the pixel tag the id `{handle}-js`, quoted with ' up to
+		// 6.3 and " from 6.4. Fall back to the first tag with a src if an
+		// optimization plugin has rewritten the id.
+		$patterns = array(
+			'/<script\b(?=[^>]*\sid=([\'"])' . preg_quote( self::HANDLE . '-js', '/' ) . '\1)/',
+			'/<script\b(?=[^>]*\ssrc=)/',
+		);
+		foreach ( $patterns as $pattern ) {
+			$count  = 0;
+			$tagged = preg_replace( $pattern, '<script' . $extra, $tag, 1, $count );
+			if ( $count > 0 ) {
+				return $tagged;
+			}
+		}
+
+		return $tag;
 	}
 }
