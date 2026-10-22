@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>0.2.1 (2026-10-22)</small>
+
+* Merge pull request #3 from LinkForty/fix/pixel-tag-attributes ([d42673e](https://github.com/LinkForty/wordpress-plugin/commit/d42673e)), closes [#3](https://github.com/LinkForty/wordpress-plugin/issues/3)
+* fix: put the pixel's data attributes on its own script tag ([4a17340](https://github.com/LinkForty/wordpress-plugin/commit/4a17340))
+
 ## [0.2.0] - 2026-10-16
 
 ### Fixed

@@ -4,7 +4,7 @@ Tags: analytics, conversion tracking, woocommerce, attribution, deep links
 Requires at least: 6.3
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
